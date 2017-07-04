@@ -1,5 +1,7 @@
 package com.example.khotiun.criminalintent;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,6 +16,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 
+import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -24,6 +27,8 @@ public class CrimeFragment extends Fragment {
 
     private static final String ARG_CRIME_ID = "crime_id";
     private static final String DIALOG_DATE = "DialogDate";
+
+    private static final int REQUEST_DATE = 0;
 
     private Crime mCrime;
     private EditText mTitleField;
@@ -54,28 +59,33 @@ public class CrimeFragment extends Fragment {
         mTitleField.setText(mCrime.getTitle());
         mTitleField.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence c, int start, int count, int after) {//метод вызывается до изменений, чтобы уведомить нас, что в строке s, начиная с позиции start вот-вот будут заменены count символов, новыми after символами. Изменение текста s в этом методе является ошибкой.
+            public void beforeTextChanged(CharSequence c, int start, int count, int after) {//метод вызывается до изменений, чтобы уведомить нас,
+                // что в строке s, начиная с позиции start вот-вот будут заменены count символов, новыми after символами. Изменение текста s в этом методе является ошибкой.
 
             }
 
             @Override
-            public void onTextChanged(CharSequence c, int start, int before, int count) {//метод вызывается, чтобы уведомить нас, что в строке s, начиная с позиции start, только что заменены after символов, новыми count символами. Изменение текста s в этом методе является ошибкой.
+            public void onTextChanged(CharSequence c, int start, int before, int count) {//метод вызывается, чтобы уведомить нас, что в строке s,
+                // начиная с позиции start, только что заменены after символов, новыми count символами. Изменение текста s в этом методе является ошибкой.
                 mCrime.setTitle(c.toString());
             }
 
             @Override
-            public void afterTextChanged(Editable c) {//метод вызывается, чтобы уведомить нас, что где-то в строке s, текст был изменен. В этом методе можно вносить изменения в текст s, но будьте осторожны, чтобы не зациклиться, потому что любые изменения в s рекурсивно вызовут этот же метод.
+            public void afterTextChanged(Editable c) {//метод вызывается, чтобы уведомить нас, что где-то в строке s, текст был изменен. В этом методе можно вносить изменения в текст s,
+                // но будьте осторожны, чтобы не зациклиться, потому что любые изменения в s рекурсивно вызовут этот же метод.
 
             }
         });
 
         mDateButton = (Button) v.findViewById(R.id.crime_date);
-        mDateButton.setText(mCrime.getDate().toString());//задать кнопке текущую дату
+        updateDate();
         mDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FragmentManager manager = getFragmentManager();
                 DatePickerFragment dialog = DatePickerFragment.newInstance(mCrime.getDate());
+                dialog.setTargetFragment(CrimeFragment.this, REQUEST_DATE);//Метод получает фрагмент, который станет целевым, и код запроса,
+                // аналогичный передаваемому startActivityForResult(…).По коду запроса целевой фрагмент позднее может определить, какой фрагмент возвращает информацию.
                 dialog.show(manager, DIALOG_DATE);
             }
         });
@@ -89,5 +99,21 @@ public class CrimeFragment extends Fragment {
             }
         });
         return v;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode != Activity.RESULT_OK){
+            return;
+        }
+        if (requestCode == REQUEST_DATE){
+            Date date = (Date) data.getSerializableExtra(DatePickerFragment.EXTRA_DATE);
+            mCrime.setDate(date);
+            updateDate();
+        }
+    }
+
+    private void updateDate() {
+        mDateButton.setText(mCrime.getDate().toString());
     }
 }
