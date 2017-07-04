@@ -14,13 +14,13 @@ public class Crime {
 
     private UUID mId;//айди обьекта
     private String mTitle;//название преступления
-    private String mDate;//дата преступления
+    private Date mDate;//дата преступления
     private boolean mSolved;//было ли роскрыто преступление
 
     public Crime() {
         mId = UUID.randomUUID();//способ генерации уникальных идентификаторов
-        mDate = new SimpleDateFormat("E,MMMM dd,yyyy").format(new Date());//орматирование текущей даты в определленном порядке
-
+        // mDate = new SimpleDateFormat("E,MMMM dd,yyyy").format(new Date());//орматирование текущей даты в определленном порядке
+        mDate = new Date();
     }
 
     public UUID getId() {
@@ -35,11 +35,11 @@ public class Crime {
         mTitle = title;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return mDate;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         mDate = date;
     }
 
