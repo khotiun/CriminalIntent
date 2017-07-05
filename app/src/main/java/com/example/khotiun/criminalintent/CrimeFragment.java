@@ -84,8 +84,7 @@ public class CrimeFragment extends Fragment {
             public void onClick(View v) {
                 FragmentManager manager = getFragmentManager();
                 DatePickerFragment dialog = DatePickerFragment.newInstance(mCrime.getDate());
-                dialog.setTargetFragment(CrimeFragment.this, REQUEST_DATE);//Метод получает фрагмент, который станет целевым, и код запроса,
-                // аналогичный передаваемому startActivityForResult(…).По коду запроса целевой фрагмент позднее может определить, какой фрагмент возвращает информацию.
+                dialog.setTargetFragment(CrimeFragment.this, REQUEST_DATE);//Задаем экземляру DatePickerFragment целевой фрагмент
                 dialog.show(manager, DIALOG_DATE);
             }
         });
@@ -113,7 +112,7 @@ public class CrimeFragment extends Fragment {
         }
     }
 
-    private void updateDate() {
-        mDateButton.setText(mCrime.getDate().toString());
+    private void updateDate() {//вызывается в двух местах поэтому определили в метод
+        mDateButton.setText(mCrime.getDate().toString());//обновление текста в кнопке
     }
 }

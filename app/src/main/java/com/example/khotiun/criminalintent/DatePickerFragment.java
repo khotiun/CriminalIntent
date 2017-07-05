@@ -61,12 +61,12 @@ public class DatePickerFragment extends DialogFragment {
                 .setTitle(R.string.date_picker_title)//задает название диалога
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {//действия при нажатии на кнопку ок
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(DialogInterface dialog, int which) {//при нажатии на кнопку ок, забирается выбранная дата
                         int year = mDatePicker.getYear();
                         int month = mDatePicker.getMonth();
                         int day = mDatePicker.getDayOfMonth();
                         Date date = new GregorianCalendar(year, month, day).getTime();
-                        sendResult(Activity.RESULT_OK, date);
+                        sendResult(Activity.RESULT_OK, date);//вызывается целевой фрагмент
                     }
                 })
                 .create();
@@ -80,6 +80,6 @@ public class DatePickerFragment extends DialogFragment {
         Intent intent = new Intent();
         intent.putExtra(EXTRA_DATE, date);
 
-        getTargetFragment().onActivityResult(getTargetRequestCode(), resultCode, intent);
+        getTargetFragment().onActivityResult(getTargetRequestCode(), resultCode, intent);//getTargetFragment - вернет целевой фрагмент и запустит у него onActivityResult
     }
 }
