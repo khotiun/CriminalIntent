@@ -18,8 +18,11 @@ public class Crime {
     private boolean mSolved;//было ли роскрыто преступление
 
     public Crime() {
-        mId = UUID.randomUUID();//способ генерации уникальных идентификаторов
-        // mDate = new SimpleDateFormat("E,MMMM dd,yyyy").format(new Date());//орматирование текущей даты в определленном порядке
+        this(UUID.randomUUID());
+    }
+
+    public Crime(UUID id) {
+        mId = id;
         mDate = new Date();
     }
 
