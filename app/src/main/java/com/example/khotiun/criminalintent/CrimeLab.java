@@ -33,7 +33,7 @@ public class CrimeLab {
 
     private CrimeLab(Context context) {//приватный конструктор нужен чтобы другие классы не могли создать обьект этого класса
         mContext = context.getApplicationContext();
-        mDatabase = new CrimeBaseHelper(mContext).getWritableDatabase();
+        mDatabase = new CrimeBaseHelper(mContext).getWritableDatabase();//получить базу данных для записи
     }
 
     public void addCrime(Crime c) {
@@ -94,11 +94,12 @@ public class CrimeLab {
         values.put(CrimeTable.Cols.TITLE, crime.getTitle());
         values.put(CrimeTable.Cols.DATE, crime.getDate().getTime());
         values.put(CrimeTable.Cols.SOLVED, crime.isSolved() ? 1 : 0);
+        values.put(CrimeTable.Cols.SUSPECT, crime.getSuspect());
 
         return values;
     }
 
-    private CrimeCursorWrapper queryCrimes(String whereClause, String[] whereArgs) {
+    private CrimeCursorWrapper queryCrimes(String whereClause, String[] whereArgs) {//чтение с базы данных
         Cursor cursor = mDatabase.query(
                 CrimeTable.NAME,
                 null, // Columns - null выбирает все столбцы
