@@ -4,11 +4,13 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Environment;
 
 import com.example.khotiun.criminalintent.database.CrimeBaseHelper;
 import com.example.khotiun.criminalintent.database.CrimeCursorWrapper;
 import com.example.khotiun.criminalintent.database.CrimeDbSchema;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -77,6 +79,20 @@ public class CrimeLab {
         } finally {
             cursor.close();
         }
+    }
+
+    public File getPhotoFile(Crime crime){
+        //Этот код не создает никакие файлы в файловой системе. Он только возвращает объекты File, представляющие нужные места.
+        // При этом он проверяет наличие внешнего хранилища для сохранения данных. Если внешнее хранилище недоступно,
+        // getExternalFilesDir(String) возвращает null — как и весь метод.
+        File externalFilesDir = mContext
+                .getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+
+        if (externalFilesDir == null){
+            return null;
+        }
+
+        return new File(externalFilesDir, crime.getPhotoFilename());
     }
 
     public void updateCrime(Crime crime) {
