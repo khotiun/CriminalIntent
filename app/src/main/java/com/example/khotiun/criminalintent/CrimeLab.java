@@ -86,7 +86,8 @@ public class CrimeLab {
         // При этом он проверяет наличие внешнего хранилища для сохранения данных. Если внешнее хранилище недоступно,
         // getExternalFilesDir(String) возвращает null — как и весь метод.
         File externalFilesDir = mContext
-                .getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+                .getExternalFilesDir(Environment.DIRECTORY_PICTURES);//На всех устройствах Android присутствует по крайней мере одна область
+        // для внешнего хранения: первичная (primary) область, которая находится в папке, возвращаемой Environment.getExternalStorageDirectory().
 
         if (externalFilesDir == null){
             return null;
